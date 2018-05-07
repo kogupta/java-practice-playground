@@ -1,0 +1,5 @@
+dependencies {
+    compile libs.json2pojo
+    compile libs.avro
+    compile libs.avroTools
+}

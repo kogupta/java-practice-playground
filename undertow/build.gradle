@@ -1,0 +1,6 @@
+dependencies {
+    compile libs.undertowCore
+    compile libs.okhttp
+    compile libs.okhttpUrlConnection
+    compile libs.logback
+}

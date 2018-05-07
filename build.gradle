@@ -1,0 +1,53 @@
+buildscript {
+  repositories {
+      jcenter()
+  }
+  // buildscript dependencies can be used for build time plugins.
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+  }
+}
+
+// Include a gradle script that has all of our dependencies split out.
+apply from: "gradle/dependencies.gradle"
+
+allprojects {
+    // Apply the java plugin to add support for Java
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group = 'org.kogu.practiceOrPerish'
+    version = 'always-be-practicing'
+
+    repositories { 
+        mavenLocal()
+        mavenCentral()
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+//            failOnVersionConflict()
+
+            // Auto force all of our explicit dependencies.
+//            libs.each { k, v -> force(v) }
+
+            // cache dynamic versions for 10 minutes
+            cacheDynamicVersionsFor 10*60, 'seconds'
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    shadowJar {
+       classifier = null
+    }
+}
