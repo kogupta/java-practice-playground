@@ -6,7 +6,7 @@ ext {
             logback       : '1.2.3',       // Logging
             undertow      : '1.4.20.Final',// Webserver
             metrics       : '3.2.5',       // Metrics
-            guava         : '23.3-jre',    // Common / Helper libraries
+            guava         : '23.0',        // Common / Helper libraries
             typesafeConfig: '1.3.2',       // Configuration
             hikaricp      : '2.7.2',       // JDBC connection pool
             jool          : '0.9.12',      // Functional Utils
@@ -39,12 +39,6 @@ ext {
             logback              : "ch.qos.logback:logback-classic:$versions.logback",
             guava                : "com.google.guava:guava:$versions.guava",
             typesafeConfig       : "com.typesafe:config:$versions.typesafeConfig",
-            handlebars           : "com.github.jknack:handlebars:$versions.handlebars",
-            handlebarsJackson    : "com.github.jknack:handlebars-jackson2:$versions.handlebars",
-            handlebarsMarkdown   : "com.github.jknack:handlebars-markdown:$versions.handlebars",
-            handlebarsHumanize   : "com.github.jknack:handlebars-humanize:$versions.handlebars",
-            handlebarsHelpers    : "com.github.jknack:handlebars-helpers:$versions.handlebars",
-            htmlCompressor       : "com.googlecode.htmlcompressor:htmlcompressor:$versions.htmlCompressor",
             hikaricp             : "com.zaxxer:HikariCP:$versions.hikaricp",
             jool                 : "org.jooq:jool:$versions.jool",
             hashids              : "org.hashids:hashids:$versions.hashids",
@@ -57,4 +51,3 @@ ext {
             junit                : "junit:junit:$versions.junit",
     ]
 }
-// {{end:dependencies}}
