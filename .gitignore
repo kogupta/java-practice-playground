@@ -3,6 +3,7 @@
 **/bin
 **/target/
 **/build
+**/out
 .settings/
 **/*/rebel.xml
 .DS_STORE
