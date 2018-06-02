@@ -4,11 +4,10 @@ package org.kogu.practice.http;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -29,10 +28,6 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
 
   private static boolean isEmpty(String str) {
     return str == null || str.length() == 0;
-  }
-
-  private static String nonNullString(String str) {
-    return isEmpty(str) ? "" : str;
   }
 
   private static Properties getTenantIDMapFromEntry(ZipEntry entry) throws IOException {
@@ -59,23 +54,19 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
     this(in, null);
   }
 
-  public PersistStoreInputStream(InputStream in, Message.ObjectInfo objectInfo) {
+  private PersistStoreInputStream(InputStream in, Message.ObjectInfo objectInfo) {
     this(in, true, objectInfo, null, null, null, true, null, 0L);
   }
 
-  public PersistStoreInputStream(InputStream in, Message.ObjectInfo objectInfo, boolean filterTenants) {
-    this(in, true, objectInfo, null, null, null, filterTenants, null, 0L);
-  }
-
-  protected PersistStoreInputStream(InputStream in,
-                                    boolean close,
-                                    Message.ObjectInfo objectInfo,
-                                    String rootEntryName,
-                                    Properties tenantIDMapping,
-                                    String rootTenantID,
-                                    boolean filterTenants,
-                                    String requestIdentifier,
-                                    long requestTime) {
+  private PersistStoreInputStream(InputStream in,
+                                  boolean close,
+                                  Message.ObjectInfo objectInfo,
+                                  String rootEntryName,
+                                  Properties tenantIDMapping,
+                                  String rootTenantID,
+                                  boolean filterTenants,
+                                  String requestIdentifier,
+                                  long requestTime) {
     this.zipIs = new ZipInputStream(in);
     this.doClose = close;
     this.filterTenants = filterTenants;
@@ -130,7 +121,7 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
           String currentTenantID = this.lookupTenantID(currentEntryName);
           boolean supportedTenant = true;
           if (this.filterTenants) {
-            supportedTenant = this.isSupportedTenant(currentTenantID);
+            supportedTenant = this.isSupportedTenant();
           }
 
           if (this.doClose && supportedTenant) {
@@ -143,9 +134,7 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
             this.currentIs = this.getFormattedInputStream(this.zEntry, this.rootEntryName, this.rootTenantID, this.zdtIdentifier, this.zdtTime);
           }
         }
-      }
-
-      if (this.currentIs != null) {
+      } else {
         pEntry = this.currentIs.getNextEntry();
         if (pEntry == null) {
           this.currentIs = null;
@@ -196,26 +185,6 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
     }
   }
 
-  private String getEntryKeySet(Set<Entry<String, Message.AttachedData>> entrySet) {
-    if (entrySet == null) {
-      return null;
-    } else {
-      String str = "";
-      boolean first = true;
-
-      for (Iterator i$ = entrySet.iterator(); i$.hasNext(); first = false) {
-        Entry<String, Message.AttachedData> entry = (Entry) i$.next();
-        if (!first) {
-          str = str + ",";
-        }
-
-        str = str + nonNullString(entry.getKey());
-      }
-
-      return str;
-    }
-  }
-
   private PersistStoreStream getFormattedInputStream(ZipEntry entry, String topEntryName, String topTenantID, String rootEntryIdentifer, long rootEntryTime) {
     PersistStoreStream is = null;
     if (entry == null) {
@@ -250,22 +219,12 @@ public class PersistStoreInputStream extends InputStream implements PersistStore
     return this.objectInfo != null && this.objectInfo.getMergeMethod() != null && this.objectInfo.getMergeMethod() == Message.MergeMethod.ZIP;
   }
 
-  private boolean isSupportedTenant(String target) { return true;}
+  private boolean isSupportedTenant() { return true;}
 
   private String lookupTenantID(String entryName) { return entryName;}
 
-  private String lookupTenantIDFromObjectInfo(String entryName) {
-    String tenantID = null;
-    Message.AttachedData attachedData = this.getAttachedData(entryName);
-    if (attachedData != null) {
-      tenantID = attachedData.getTenantId();
-    }
-
-    return tenantID;
-  }
-
   private ZipEntry readTOC() throws IOException {
-    ZipEntry entry = null;
+    ZipEntry entry;
     entry = this.zipIs.getNextEntry();
     if (entry != null && entry.getName().equals("TOC")) {
       this.toc = new Properties();

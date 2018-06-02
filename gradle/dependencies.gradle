@@ -16,6 +16,7 @@ ext {
             json2pojo     : '0.5.1',
             avro          : '1.8.2',
 
+
             junit         : '4.12',        // Unit Testing
     ]
     libs = [
@@ -47,6 +48,8 @@ ext {
             json2pojo            : "org.jsonschema2pojo:jsonschema2pojo-core:$versions.json2pojo",
             avro                 : "org.apache.avro:avro:$versions.avro:sources",
             avroTools            : "org.apache.avro:avro-tools:$versions.avro:sources",
+            asynchttpclient      : "org.asynchttpclient:async-http-client:2.4.4",
+            jetbrainsAnnotations : "org.jetbrains:annotations:15.0",
 
             junit                : "junit:junit:$versions.junit",
     ]

@@ -1,3 +1,8 @@
 dependencies {
     compile libs.netty
+    compile libs.asynchttpclient
+    compile libs.jetbrainsAnnotations
+    compile libs.jacksonCore
+    compile libs.jacksonDatabind
+    compile libs.guava
 }

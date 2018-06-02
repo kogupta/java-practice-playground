@@ -139,7 +139,7 @@ public class Client {
     }
   }
 
-  private static final class ByteBufInputStream extends InputStream {
+  public static final class ByteBufInputStream extends InputStream {
     private ByteBuf buf;
     private int len;
 
